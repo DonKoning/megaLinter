@@ -1,0 +1,70 @@
+﻿# Configuration file for MegaLinter
+# See all available variables at https://megalinter.io/configuration/ and in linters documentation
+
+# APPLY_FIXES: all
+# ENABLE: # If you use ENABLE variable, all other languages/formats/tooling formats will be disabled by default
+#   - ARM
+#   - JSON
+#   - MARKDOWN
+#   - POWERSHELL
+#   - YAML
+ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
+  - ARM_ARM_TTK
+  - JSON_JSONLINT
+  - MARKDOWN_MARKDOWNLINT
+  - MARKDOWN_MARKDOWN_LINK_CHECK
+  - MARKDOWN_MARKDOWN_TABLE_FORMATTER
+  - POWERSHELL_POWERSHELL
+  - POWERSHELL_POWERSHELL_FORMATTER
+  - YAML_YAMLLINT
+# DISABLE:
+#   - CLOUDFORMATION
+#   - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
+#   - CSS
+#   - EDITORCONFIG
+#   - SPELL # Uncomment to disable checks of spelling mistakes
+#   - JAVASCRIPT
+#   - TEKTON
+# DISABLE_LINTERS:
+#   - JSON_V8R
+#   - JSON_PRETTIER
+#   - REPOSITORY_GITLEAKS
+#   - REPOSITORY_KICS
+#   - SPELL_PROSELINT
+#   - SPELL_MISSPELL
+#   - SPELL_VALE
+#   - REPOSITORY_TRUFFLEHOG
+# DISABLE_ERRORS_LINTERS:
+#   - PYTHON_BANDIT
+#   - PYTHON_PYRIGHT
+#   - REPOSITORY_DEVSKIM
+#   - REPOSITORY_GRYPE
+#   - REPOSITORY_SEMGREP
+#   - SPELL_VALE
+VALIDATE_ALL_CODEBASE: true
+PRINT_ALL_FILES: true
+FILTER_REGEX_INCLUDE: '(CheckMe/)'
+FILTER_REGEX_EXCLUDE: '(\.azuredevops|\.vscode|\.git|\.automation/test|\.automation/generated|\.github/workflows|docs/javascripts|docs/overrides|docs/json-schemas|flavors|TEMPLATES)'
+JSON_JSONLINT_FILTER_REGEX_EXCLUDE: '(\.vscode/|bicepconfig.json)'
+YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: '(templates/\.mega-linter\.yml)'
+# YAML_PRETTIER_FILTER_REGEX_EXCLUDE: '(templates/\.mega-linter\.yml|mkdocs\.yml)'
+# YAML_V8R_FILTER_REGEX_EXCLUDE: '(descriptors|templates/\.mega-linter\.yml|\.codecov\.yml)'
+BASH_FILTER_REGEX_EXCLUDE: "(lib)"
+MARKDOWN_FILTER_REGEX_EXCLUDE: '(license\.md|docs/licenses)'
+MARKDOWN_MARKDOWN_LINK_CHECK_DISABLE_ERRORS: true
+SHOW_ELAPSED_TIME: true
+FLAVOR_SUGGESTIONS: false
+EMAIL_REPORTER: false
+FILEIO_REPORTER: false
+JSON_REPORTER: true
+GITHUB_STATUS_REPORTER: false
+GITLAB_COMMENT_REPORTER: false
+AZURE_COMMENT_REPORTER: true
+# PLUGINS:
+#   - https://raw.githubusercontent.com/oxsecurity/megalinter/main/.automation/test/mega-linter-plugin-test/test.megalinter-descriptor.yml
+# PRE_COMMANDS:
+#   - command: echo "This is MegaLinter PRE_COMMAND on own MegaLinter ! :)"
+#     cwd: "root"
+# POST_COMMANDS:
+#   - command: echo "This is MegaLinter POST_COMMAND on own MegaLinter ! :)"
+#     cwd: "workspace"
