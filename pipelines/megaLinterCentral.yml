@@ -1,0 +1,92 @@
+﻿trigger: none
+
+pool:
+  vmimage: ubuntu-latest
+
+steps:
+- checkout: self
+  persistCredentials: true
+
+- powershell: |
+    $BranchRef = "$(System.PullRequest.SourceBranch)"
+    $BranchName = $BranchRef.Split("/")[-1]
+
+    $TargetBranchRef = "$(System.PullRequest.TargetBranch)" 
+    $TargetbranchName = $TargetBranchRef.Split("/")[-1]
+
+    git --version
+    echo "System.PullRequest.SourceRepositoryURI is: $(System.PullRequest.SourceRepositoryURI)"
+    echo "System.PullRequest.TargetBranch is: $(System.PullRequest.TargetBranch)"
+    echo "System.PullRequest.SourceBranch is: $(System.PullRequest.SourceBranch)"
+
+    # Clone source branch from PR repo (--branch), or you'll be linting files in main instead of changes
+    git clone -c http.extraheader="AUTHORIZATION: bearer $($ENV:AccessToken)" "$(System.PullRequest.SourceRepositoryURI)" "$(System.DefaultWorkingDirectory)/CheckMe" --branch $BranchName
+
+    cd "$(System.DefaultWorkingDirectory)/CheckMe"
+    git fetch
+    $ChangedFiles = git diff --name-only origin/$BranchName origin/$TargetbranchName
+    echo "Output ChangedFiles:"
+    $ChangedFiles | Out-String | Write-Output
+    
+    foreach ($File in $ChangedFiles) {
+      $ChangedFilesString += "CheckMe/" + $File + ","
+    }
+    Write-Output "##vso[task.setvariable variable=ChangedFiles;]$ChangedFilesString"
+  displayName: 'Clone PR repo'
+  env:
+    AccessToken: $(System.AccessToken)
+
+# Get Pull Request Source Repository Id 
+- powershell: |
+    $AdoHttpHeader = @{
+        Authorization = 'Bearer ' + $($ENV:AccessToken)
+        Accept        = "application/json; api-version=7.0"
+    }
+    $Uri            = "https://ericsson.visualstudio.com/CBM%20Azure/_apis/git/repositories/{repositoryName}?api-version=4.1"
+    $Parts          = "$(System.PullRequest.SourceRepositoryURI)" -split "/"
+    $RepositoryName = $Parts[-1]
+    $Uri            = $Uri -replace '{repositoryName}', $RepositoryName
+    echo $Uri
+
+    $Results = Invoke-RestMethod -Uri $Uri `
+              -Headers $AdoHttpHeader `
+              -Method Get
+    $BuildRepostioryId = $Results.id
+    Write-Host "##vso[task.setvariable variable=BUILD_REPOSITORY_ID;]$BuildRepostioryId"
+
+  displayName: 'Get PR Repository ID'
+  env:
+    AccessToken: $(System.AccessToken)
+
+# Pull MegaLinter docker image
+- script: docker pull oxsecurity/megalinter:v7
+  displayName: Pull MegaLinter
+
+# Run MegaLinter
+- script: |
+    docker run -v $(System.DefaultWorkingDirectory):/tmp/lint \
+      --env-file <(env | grep -e SYSTEM_ -e BUILD_ -e TF_ -e AGENT_) \
+      -e SYSTEM_ACCESSTOKEN=$(System.AccessToken) \
+      -e GIT_AUTHORIZATION_BEARER=$(System.AccessToken) \
+      -e BUILD_REPOSITORY_ID='$(BUILD_REPOSITORY_ID)' \
+      -e MEGALINTER_FILES_TO_LINT='$(ChangedFiles)' \
+      oxsecurity/megalinter:v7
+  displayName: Run MegaLinter
+
+# Display folder tree
+- task: Powershell@2
+  displayName: Folder tree
+  condition: succeededOrFailed()
+  inputs:
+    targetType: inline
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    script: |
+      tree
+
+# Upload MegaLinter reports
+- task: PublishPipelineArtifact@1
+  condition: succeededOrFailed()
+  displayName: Upload MegaLinter reports
+  inputs:
+    targetPath: "$(System.DefaultWorkingDirectory)/megalinter-reports/"
+    artifactName: MegaLinterReport
