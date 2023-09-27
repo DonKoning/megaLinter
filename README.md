@@ -17,5 +17,4 @@ Configure a branch policy for the main branch in the repo that you want to have 
         leave other settings default
 
 # Testing
-Create a branch in the source repo and make some changes. When submitting the PR the Mega-linter pipeline should run and report findings back to the PR as a comment.
-
+Create a branch in the source repo and make some changes. When submitting the PR the MegaLinter pipeline should run and report findings back to the PR as a comment.
