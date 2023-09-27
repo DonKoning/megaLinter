@@ -7,8 +7,8 @@ If you want to use this solution to lint your files when submitting a PR, the fo
 
 ### Permissions for repositories
 - Project Settings | Repositories | Settings | Security (for all or specific repos):
-    Project Collection Build Service (ericsson) - Contribute to pull requests (Allow)
-    Project Collection Build Service (ericsson) - Read (Allow)
+    Project Collection Build Service (OrgName) - Contribute to pull requests (Allow)
+    Project Collection Build Service (OrgName) - Read (Allow)
 
 ### Branch Policy
 Configure a branch policy for the main branch in the repo that you want to have linted.
