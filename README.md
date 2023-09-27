@@ -22,14 +22,11 @@ Configure a branch policy for the main branch in the repo that you want to have 
 In your Azure DevOps project, go to Repos and select 'import repository' from the dropdown list:
 ![Import repository](docs/images/importRepository.jpg)
 
-
 Goto https://github.com/donkoning/megaLinter, click '<> Code'  and copy the web URL:
 ![Clone public GitHub repo](docs/images/cloneGitHubRepo.jpg)
 
-
-Paste the web URL in the 'import a GIT repository' interface:
+Paste the web URL in the 'import a GIT repository' interface:  
 ![Import a GIT repository UI](docs/images/importRepoDialog.jpg)
-
 
 Once imported, the result should look like this:
 ![Imported repository result](docs/images/importRepoResult.jpg)
