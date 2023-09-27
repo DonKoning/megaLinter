@@ -1,7 +1,7 @@
 # Introduction
 This repo is created in support of my blog post 'Achieve Code Consistency: MegaLinter Integration in Azure DevOps' on Microsoft Tech Community.
 
-## Requirements
+# Requirements
 If you want to use this solution to lint your files when submitting a PR, the following prerequisites must be met:
 - Project Settings | Pipelines | Settings | Protect access to repositories in YAML pipelines = Disabled
 
