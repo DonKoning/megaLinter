@@ -1,5 +1,5 @@
 # Introduction
-This repo is created in support of my blog post 'Achieve Code Consistency: Mega-Linter Integration in Azure DevOps' on Microsoft Tech Community.
+This repo is created in support of my blog post 'Achieve Code Consistency: MegaLinter Integration in Azure DevOps' on Microsoft Tech Community.
 
 ## Requirements
 If you want to use this solution to lint your files when submitting a PR, the following prerequisites must be met:
