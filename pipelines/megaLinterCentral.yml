@@ -3,6 +3,10 @@
 pool:
   vmimage: ubuntu-latest
 
+variables:
+  adoOrg: 'MngEnv310485'
+  adoProject: 'MegaLinter Demo'
+
 steps:
 - checkout: self
   persistCredentials: true
@@ -42,7 +46,7 @@ steps:
         Authorization = 'Bearer ' + $($ENV:AccessToken)
         Accept        = "application/json; api-version=7.0"
     }
-    $Uri            = "https://ericsson.visualstudio.com/CBM%20Azure/_apis/git/repositories/{repositoryName}?api-version=4.1"
+    $Uri            = "https://dev.azure.com/$(adoOrg)/$(adoProject)/_apis/git/repositories/{repositoryName}?api-version=4.1"
     $Parts          = "$(System.PullRequest.SourceRepositoryURI)" -split "/"
     $RepositoryName = $Parts[-1]
     $Uri            = $Uri -replace '{repositoryName}', $RepositoryName
