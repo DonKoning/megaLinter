@@ -4,8 +4,8 @@ pool:
   vmimage: ubuntu-latest
 
 variables:
-  adoOrg: 'MngEnv310485'
-  adoProject: 'MegaLinter Demo'
+  adoOrg: '<Enter your ADO Organisation name here>'
+  adoProject: '<Enter your ADO project Name here>'
 
 steps:
 - checkout: self
