@@ -13,7 +13,7 @@ steps:
 
 - powershell: |
     $BranchRef = "$(System.PullRequest.SourceBranch)"
-    $BranchName = $BranchRef.Split("/")[-1]
+    $BranchName = $BranchRef.Replace("refs/heads/","")
 
     $TargetBranchRef = "$(System.PullRequest.TargetBranch)" 
     $TargetbranchName = $TargetBranchRef.Split("/")[-1]
