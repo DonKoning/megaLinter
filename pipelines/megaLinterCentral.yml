@@ -15,7 +15,7 @@ steps:
     $BranchRef = "$(System.PullRequest.SourceBranch)"
     $BranchName = $BranchRef.Replace("refs/heads/","")
 
-    $TargetBranchRef = "$(System.PullRequest.TargetBranch)" 
+    $TargetBranchRef = "$(System.PullRequest.TargetBranch)"
     $TargetbranchName = $TargetBranchRef.Split("/")[-1]
 
     git --version
@@ -31,7 +31,7 @@ steps:
     $ChangedFiles = git diff --name-only origin/$BranchName origin/$TargetbranchName
     echo "Output ChangedFiles:"
     $ChangedFiles | Out-String | Write-Output
-    
+
     foreach ($File in $ChangedFiles) {
       $ChangedFilesString += "CheckMe/" + $File + ","
     }
